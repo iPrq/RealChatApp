@@ -1,23 +1,61 @@
-# RealChat - Modern Chat Application Frontend
+# Chat Application - Modular JavaScript Structure
 
-A beautiful, modern frontend for the chat application built with HTML, CSS, and JavaScript. This frontend connects to the Spring Boot backend using WebSocket (STOMP) for real-time messaging.
+## Project Structure
 
-## Features
+```
+website/
+├── index.html              # Main HTML file
+├── styles.css              # CSS styling
+├── script-original.js      # Original monolithic JavaScript (backup)
+├── js/                     # Modular JavaScript files
+│   ├── config.js          # Configuration and constants
+│   ├── chat-manager.js    # WebSocket and messaging logic
+│   ├── ui-manager.js      # UI interactions and DOM manipulation
+│   └── app.js             # Main application orchestrator
+└── README.md              # This file
+```
 
-### 🎨 Beautiful Modern UI
-- Clean, responsive design with gradient backgrounds
-- Professional chat interface with message bubbles
-- Real-time typing indicators
-- Online user list
-- Multiple chat rooms
-- Smooth animations and transitions
+## Module Overview
 
-### 💬 Real-time Messaging
-- WebSocket connection using STOMP protocol
-- Instant message delivery
-- Message history loading
-- System notifications (user join/leave)
-- Message timestamps with smart formatting
+### 1. config.js
+- **Purpose**: Centralized configuration management
+- **Contains**: API endpoints, WebSocket settings, UI constants, error messages
+- **Key Features**: Dynamic backend URL detection, room configurations, avatar colors
+
+### 2. chat-manager.js
+- **Purpose**: Handles all WebSocket communication and messaging
+- **Key Methods**:
+  - `connect(username)` - Establish WebSocket connection
+  - `sendMessage(content)` - Send chat messages
+  - `switchRoom(roomId)` - Change chat rooms
+  - `handleTyping()` - Typing indicators
+- **Features**: Automatic reconnection, message validation, system messages
+
+### 3. ui-manager.js
+- **Purpose**: Manages all user interface interactions and updates
+- **Key Methods**:
+  - `displayMessage(message, animate)` - Show messages in chat
+  - `updateUserProfile(username)` - Update user display
+  - `showToast(message, type)` - Show notifications
+  - `updateConnectionStatus()` - Connection status indicators
+- **Features**: Toast notifications, typing indicators, user lists, message formatting
+
+### 4. app.js
+- **Purpose**: Main application orchestrator and event binding
+- **Key Methods**:
+  - `initializeApp()` - Initialize all components
+  - `bindEvents()` - Set up event listeners
+  - `handleJoinChat()` - User join process
+  - `sendMessage()` - Message sending coordination
+- **Features**: Event management, application lifecycle, development helpers
+
+## Benefits of Modular Structure
+
+1. **Separation of Concerns**: Each module has a specific responsibility
+2. **Maintainability**: Easier to debug and modify specific features
+3. **Reusability**: Components can be reused or replaced independently
+4. **Scalability**: Easy to add new features without affecting existing code
+5. **Testing**: Individual modules can be tested in isolation
 
 ### 🔧 Interactive Features
 - Username customization with avatar colors
