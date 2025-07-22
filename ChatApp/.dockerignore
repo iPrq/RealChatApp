@@ -1,0 +1,17 @@
+# Backend .dockerignore
+target/
+!target/ChatApp-*.jar
+.mvn/
+mvnw
+mvnw.cmd
+.git/
+.gitignore
+README.md
+*.md
+.env
+.env.local
+.env.example
+node_modules/
+npm-debug.log*
+.DS_Store
+*.log
