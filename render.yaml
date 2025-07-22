@@ -1,0 +1,32 @@
+# Render Backend Configuration
+# render.yaml for backend service
+
+services:
+  - type: web
+    name: realchatapp-backend
+    env: docker
+    dockerfilePath: ./ChatApp/Dockerfile
+    dockerContext: ./ChatApp
+    plan: free
+    region: ohio
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: MONGODB_URI
+        sync: false  # Set this in Render dashboard
+      - key: ALLOWED_ORIGINS
+        sync: false  # Set this in Render dashboard
+      - key: PORT
+        value: 8080
+
+  - type: web
+    name: realchatapp-frontend
+    env: docker
+    dockerfilePath: ./website/Dockerfile
+    dockerContext: ./website
+    plan: free
+    region: ohio
+    branch: main
+    healthCheckPath: /health
