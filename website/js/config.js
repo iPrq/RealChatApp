@@ -10,9 +10,25 @@ const CONFIG = {
             MESSAGES: '/message'
         },
         getBackendUrl() {
-            // Dynamically determine backend URL based on current hostname
-            const protocol = window.location.protocol;
+            // Dynamically determine backend URL based on environment
             const hostname = window.location.hostname;
+            
+            // Production: Use Render backend URL (update with your actual backend URL)
+            if (hostname.includes('onrender.com')) {
+                return 'https://realchatapp-backend.onrender.com'; // Replace with your actual backend URL
+            }
+            
+            // Local development with environment variable support
+            if (window.location.hostname === 'localhost') {
+                // Check if backend URL is provided via environment or config
+                const envBackendUrl = window.BACKEND_URL || localStorage.getItem('BACKEND_URL');
+                if (envBackendUrl) {
+                    return envBackendUrl;
+                }
+            }
+            
+            // Default: Use localhost for development
+            const protocol = window.location.protocol;
             return `${protocol}//${hostname}:${this.BASE_PORT}`;
         }
     },
