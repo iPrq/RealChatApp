@@ -50,6 +50,15 @@ class UIManager {
             .message.system {
                 justify-content: center;
             }
+            
+            .refresh-spinning {
+                animation: spin 1s linear infinite;
+            }
+            
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
         `;
         document.head.appendChild(toastStyles);
     }

@@ -1,5 +1,6 @@
 package com.ChatApp.configurations;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -9,6 +10,10 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
+    
+    @Value("${cors.allowed.origins:http://localhost:3000,https://realchatapp-wvl1.onrender.com}")
+    private String allowedOrigins;
+    
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
@@ -18,10 +23,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry config){
         config.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*") // Allow all origins for development
+                .setAllowedOrigins(allowedOrigins.split(","))
                 .withSockJS();
     }
-
-
-
 }

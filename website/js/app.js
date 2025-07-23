@@ -66,6 +66,7 @@ class ChatApp {
     bindMessageEvents() {
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
+        const refreshBtn = document.getElementById('refreshMessagesBtn');
         
         if (messageInput) {
             messageInput.addEventListener('keypress', (e) => {
@@ -83,6 +84,14 @@ class ChatApp {
         
         if (sendBtn) {
             sendBtn.addEventListener('click', () => this.sendMessage());
+        }
+        
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => {
+                if (this.chatManager) {
+                    this.chatManager.refreshMessages();
+                }
+            });
         }
     }
 
@@ -111,6 +120,17 @@ class ChatApp {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden && this.uiManager) {
                 this.uiManager.hideTypingIndicator();
+            }
+        });
+        
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+R or F5 for refresh (prevent default browser refresh)
+            if ((e.ctrlKey && e.key === 'r') || e.key === 'F5') {
+                e.preventDefault();
+                if (this.chatManager) {
+                    this.chatManager.refreshMessages();
+                }
             }
         });
     }

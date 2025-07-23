@@ -90,22 +90,57 @@ class ChatManager {
     // Load existing messages from REST API
     async loadExistingMessages() {
         try {
+            console.log('📥 Loading existing messages...');
             const backendUrl = CONFIG.API.getBackendUrl() + CONFIG.API.ENDPOINTS.MESSAGES;
-            const response = await fetch(backendUrl);
+            console.log('Fetching from:', backendUrl);
+            
+            const response = await fetch(backendUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
             
             if (response.ok) {
                 const messages = await response.json();
                 console.log(`📋 Loaded ${messages.length} existing messages`);
                 
-                // Clear welcome message
+                if (messages && messages.length > 0) {
+                    // Sort messages by timestamp to ensure correct order
+                    messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                    
+                    // Clear welcome message and display all messages
+                    if (window.uiManager) {
+                        uiManager.clearMessages();
+                        console.log('🎨 Displaying messages in UI...');
+                        
+                        messages.forEach((message, index) => {
+                            // Add a small delay for visual effect
+                            setTimeout(() => {
+                                uiManager.displayMessage(message, false);
+                            }, index * 50);
+                        });
+                        
+                        // Scroll to bottom after all messages are loaded
+                        setTimeout(() => {
+                            uiManager.scrollToBottom();
+                        }, messages.length * 50 + 100);
+                    }
+                } else {
+                    console.log('📝 No previous messages found');
+                }
+            } else {
+                console.error('❌ Failed to load messages. Status:', response.status);
                 if (window.uiManager) {
-                    uiManager.clearMessages();
-                    messages.forEach(message => uiManager.displayMessage(message, false));
-                    uiManager.scrollToBottom();
+                    uiManager.showError('Failed to load previous messages');
                 }
             }
         } catch (error) {
-            console.error('Error loading messages:', error);
+            console.error('❌ Error loading messages:', error);
+            if (window.uiManager) {
+                uiManager.showError('Unable to load previous messages. Please check your connection.');
+            }
         }
     }
 
@@ -204,6 +239,40 @@ class ChatManager {
     updateConnectionStatus(status, className) {
         if (window.uiManager) {
             uiManager.updateConnectionStatus(status, className);
+        }
+    }
+
+    // Refresh messages manually
+    async refreshMessages() {
+        console.log('🔄 Refreshing messages...');
+        const refreshBtn = document.getElementById('refreshMessagesBtn');
+        
+        // Add spinning animation
+        if (refreshBtn) {
+            refreshBtn.classList.add('refresh-spinning');
+            refreshBtn.disabled = true;
+        }
+        
+        if (window.uiManager) {
+            uiManager.showInfo('Refreshing messages...');
+        }
+        
+        try {
+            await this.loadExistingMessages();
+            if (window.uiManager) {
+                uiManager.showSuccess('Messages refreshed successfully!');
+            }
+        } catch (error) {
+            console.error('Error refreshing messages:', error);
+            if (window.uiManager) {
+                uiManager.showError('Failed to refresh messages');
+            }
+        } finally {
+            // Remove spinning animation
+            if (refreshBtn) {
+                refreshBtn.classList.remove('refresh-spinning');
+                refreshBtn.disabled = false;
+            }
         }
     }
 
