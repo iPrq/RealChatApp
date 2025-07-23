@@ -20,7 +20,7 @@ class ChatManager {
         this.updateConnectionStatus(CONFIG.MESSAGES.CONNECTION.CONNECTING, 'connecting');
         
         try {
-            const backendUrl = CONFIG.API.getBackendUrl() + CONFIG.API.ENDPOINTS.WEBSOCKET;
+            const backendUrl = "https://realchatapp-1-ogou.onrender.com" + CONFIG.API.ENDPOINTS.WEBSOCKET;
             console.log('Connecting to:', backendUrl);
             
             this.socket = new SockJS(backendUrl);
