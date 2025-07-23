@@ -5,7 +5,7 @@ services:
   - type: web
     name: realchatapp-backend
     env: docker
-    dockerfilePath: ./ChatApp/Dockerfile
+    dockerfilePath: Dockerfile
     dockerContext: ./ChatApp
     plan: free
     region: ohio
@@ -15,7 +15,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: MONGODB_URI
-        sync: false  # Set this in Render dashboard
+        sync: false  # Set this in Render dashboard 
       - key: ALLOWED_ORIGINS
         sync: false  # Set this in Render dashboard
       - key: PORT
@@ -24,9 +24,11 @@ services:
   - type: web
     name: realchatapp-frontend
     env: docker
-    dockerfilePath: ./website/Dockerfile
+    dockerfilePath: Dockerfile
     dockerContext: ./website
     plan: free
     region: ohio
+    branch: main
+    healthCheckPath: /health
     branch: main
     healthCheckPath: /health
