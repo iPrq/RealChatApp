@@ -13,9 +13,9 @@ const CONFIG = {
             // Dynamically determine backend URL based on environment
             const hostname = window.location.hostname;
             
-            // Production: Use Render backend URL (update with your actual backend URL)
+            // Production: Use actual Render backend URL
             if (hostname.includes('onrender.com')) {
-                return 'https://realchatapp-backend.onrender.com'; // Replace with your actual backend URL
+                return 'https://realchatapp-backend.onrender.com'; // Your actual backend URL
             }
             
             // Local development with environment variable support

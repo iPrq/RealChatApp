@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+target/
+
+# Environment files with credentials
+.env
+render.yaml
+
+# IDE files
+.vscode/settings.json
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
